@@ -8,14 +8,14 @@ CORS(app)
 
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel.from_pretrained("models/gemini-1.5-latest")
+model = genai.GenerativeModel(model_name="models/gemini-1.5-latest")
 
 @app.route('/api/gen', methods=['GET'])
 def generate_response():
     query = request.args.get('ask')
     if not query:
         return jsonify({'error': 'Missing query parameter'}), 400
-
+    
     try:
         response = model.generate_text(
             prompt=query,
