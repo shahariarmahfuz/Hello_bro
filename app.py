@@ -8,25 +8,24 @@ CORS(app)
 
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 genai.configure(api_key=GOOGLE_API_KEY)
-model = genai.GenerativeModel(model_name="models/gemini-1.5-latest")
 
 @app.route('/api/gen', methods=['GET'])
 def generate_response():
-    query = request.args.get('ask')
+    query = request.args.get('prompt')  # Get prompt from query parameter
     if not query:
-        return jsonify({'error': 'Missing query parameter'}), 400
+        return jsonify({'error': 'Missing prompt parameter'}), 400
 
     try:
-        response = model.generate(
+        response = genai.generate_text(
+            model="models/gemini-1.5-flash-latest",
             prompt=query,
-            temperature=0.7,  # Adjust temperature for creativity
-            max_output_tokens=1024  # Adjust max tokens for response length
+            temperature=0.7,
+            max_output_tokens=1024
         )
         return jsonify({'response': response.text})
-
     except Exception as e:
         return jsonify({'error': f'An error occurred: {e}'}), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))  # Use port from environment or default to 8080
+    port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port)
