@@ -1,12 +1,12 @@
-import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import google.generativeai as genai
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-GOOGLE_API_KEY = 'AIzaSyAIhSFUE5i4NYnve8LJXoN8pxhcIMrgmJA'  # Replace 'YOUR_API_KEY' with your actual API key
+GOOGLE_API_KEY = 'AIzaSyB4X2HbcaBxnP8WdL7dlMVnFYM3Smyl7es'  # Your API key here
 genai.configure(api_key=GOOGLE_API_KEY)
 
 @app.route('/api/gen', methods=['GET'])
